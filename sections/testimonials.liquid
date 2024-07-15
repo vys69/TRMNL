@@ -1,0 +1,347 @@
+{{- 'section-image-banner.css' | asset_url | stylesheet_tag: preload: true -}}
+{{- 'section-testimonials.css' | asset_url | stylesheet_tag: preload: true -}}
+{{- 'component-slider.css' | asset_url | stylesheet_tag: preload: true -}}
+{{- 'component-slideshow.css' | asset_url | stylesheet_tag: preload: true -}}
+{{- 'slick-theme.css' | asset_url | stylesheet_tag: preload: true -}}
+{{- 'slick.css' | asset_url | stylesheet_tag: preload: true -}}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+  {%- unless section.settings.title == blank -%}
+    <div class="page-width">
+      <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
+        <h2 class="title inline-richtext {{ section.settings.heading_size }}">
+          {{ section.settings.title }}
+        </h2>
+        {%- if section.settings.button_label != blank and show_mobile_slider -%}
+          <a href="{{ section.settings.button_link }}" class="link underlined-link large-up-hide">
+            {{- section.settings.button_label | escape -}}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endunless -%}
+  <div class="{% if section.settings.full_page %}page-width page-width--full-width{% else %}page-width{% endif %}">
+    <div class="testimonials">
+      <div
+        class="testimonials-container"
+        id="testimonials-container-{{ section.id }}"
+        data-section-id="testimonials-container-{{ section.id }}"
+        data-autoplay="{{ section.settings.autoplay }}"
+      >
+        {%- for block in section.blocks -%}
+          <div
+            class=""
+            id="Slide-{{ section.id }}-{{ forloop.index }}"
+            {{ block.shopify_attributes }}
+            role="group"
+            aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
+            aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
+            tabindex="-1"
+          >
+            <div
+              class="testimonials-slide testimonials-slide--{{ section.settings.column_alignment }} color-{{ block.settings.color_scheme }}"
+              data-index="{{ forloop.index0 }}"
+              data-aos="row-of-{{ section.blocks.size }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.icon == 'quote' -%}
+                <span class="quote-icon">
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    role="presentation"
+                    class="icon icon-quote"
+                    viewBox="0 0 41 35"
+                  >
+                    <path d="M10.208 17.711h6.124v16.332H0V21.684C0 8.184 5.444.956 16.332 0v6.125c-4.083 1.14-6.124 4.414-6.124 9.82v1.766zm24.498 0h6.124v16.332H24.498V21.684C24.498 8.184 29.942.956 40.83 0v6.125c-4.083 1.14-6.124 4.414-6.124 9.82v1.766z" fill="#000" fill-rule="evenodd"/>
+                  </svg>
+                </span>
+              {%- elsif block.settings.icon == '5-stars' -%}
+                <span class="testimonial-stars">★★★★★</span>
+              {%- elsif block.settings.icon == '4-stars' -%}
+                <span class="testimonial-stars">★★★★</span>
+              {%- elsif block.settings.icon == '3-stars' -%}
+                <span class="testimonial-stars">★★★</span>
+              {%- elsif block.settings.icon == '2-stars' -%}
+                <span class="testimonial-stars">★★</span>
+              {%- elsif block.settings.icon == '1-star' -%}
+                <span class="testimonial-stars">★</span>
+              {%- endif -%}
+
+              {%- if block.settings.testimonial != blank -%}
+                <div class="testimonials-slide__testimonial">{{ block.settings.testimonial }}</div>
+              {%- endif -%}
+
+              {%- if block.settings.image != blank -%}
+                <div class="testimonail-slide__image">
+                  {{ block.settings.image | image_url: width: 420 | image_tag: loading: 'lazy', width: 100 }}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.author != blank -%}
+                <cite class="testimonials-slide__author">{{ block.settings.author | escape }}</cite>
+              {%- endif -%}
+              {%- if block.settings.author_info != blank -%}
+                <div class="testimonials__info">{{ block.settings.author_info | escape }}</div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Testimonials",
+      "label": "t:sections.multicolumn.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "IMPORTANT: Due to liquid limitations, ONLY in Theme editor you need to save (to get the frame to refresh) after changing certain settings to display the slider."
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Slider autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "full_page",
+      "label": "Desktop full page width",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "column_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.multicolumn.settings.column_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.multicolumn.settings.column_alignment.options__2.label"
+        }
+      ],
+      "default": "center",
+      "label": "Text alignment"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        {
+          "value": "accent-1",
+          "label": "t:sections.all.colors.accent_1.label"
+        },
+        {
+          "value": "accent-2",
+          "label": "t:sections.all.colors.accent_2.label"
+        },
+        {
+          "value": "background-1",
+          "label": "t:sections.all.colors.background_1.label"
+        },
+        {
+          "value": "background-2",
+          "label": "t:sections.all.colors.background_2.label"
+        },
+        {
+          "value": "inverse",
+          "label": "t:sections.all.colors.inverse.label"
+        }
+      ],
+      "default": "background-2",
+      "label": "t:sections.all.colors.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Testimonial",
+      "settings": [
+          {
+            "type": "select",
+            "id": "icon",
+            "label": "Icon",
+            "default": "5-stars",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "quote",
+                "label": "Quote"
+              },
+              {
+                "value": "5-stars",
+                "label": "5 stars"
+              },
+              {
+                "value": "4-stars",
+                "label": "4 stars"
+              },
+              {
+                "value": "3-stars",
+                "label": "3 stars"
+              },
+              {
+                "value": "2-stars",
+                "label": "2 stars"
+              },
+              {
+                "value": "1-star",
+                "label": "1 star"
+              }
+            ]
+          },
+          {
+            "type": "richtext",
+            "id": "testimonial",
+            "label": "Text",
+            "default": "<p>Add customer reviews and testimonials to showcase your store’s happy customers.</p>"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Author's image"
+          },
+          {
+            "type": "text",
+            "id": "author",
+            "label": "Author",
+            "default": "Author's name"
+          },
+          {
+            "type": "text",
+            "id": "author_info",
+            "label": "Author info",
+            "default": "Los Angeles, CA"
+          },
+          {
+            "type": "select",
+            "id": "color_scheme",
+            "options": [
+              {
+                "value": "accent-1",
+                "label": "t:sections.all.colors.accent_1.label"
+              },
+              {
+                "value": "accent-2",
+                "label": "t:sections.all.colors.accent_2.label"
+              },
+              {
+                "value": "background-1",
+                "label": "t:sections.all.colors.background_1.label"
+              },
+              {
+                "value": "background-2",
+                "label": "t:sections.all.colors.background_2.label"
+              },
+              {
+                "value": "inverse",
+                "label": "t:sections.all.colors.inverse.label"
+              }
+            ],
+            "default": "background-1",
+            "label": "t:sections.all.colors.label"
+          }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

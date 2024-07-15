@@ -1,0 +1,24 @@
+<script>
+  document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  
+  window.app = {
+    strings: {
+      addToCart: 'Add To Cart',
+      soldOut: 'Sold Out',
+      unavailable: 'Unavailable'
+    },
+    moneyFormat: {{ shop.money_format | json }}
+  };
+</script>
+
+<script src="{{ 'jquery-3.6.4.min.js' | asset_url }}" defer="defer"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#draggable" ).draggable();
+  } );
+  </script>
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script> {% comment %} Needed for accounts {% endcomment %}
+<script src="{{ 'app.bundle.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'instant-page.min.js' | asset_url }}" defer="defer"></script>

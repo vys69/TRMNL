@@ -1,0 +1,142 @@
+<header
+  class="header gradient"
+  data-section-id="{{ section.id }}"
+  data-section-type="header"
+  role="banner"
+>
+
+<svg class="imageMask" xmlns="http://www.w3.org/2000/svg" version="1.1" width="0" height="0">
+   <defs>
+      <filter id="colorMask">
+         <feFlood flood-color="{{ section.settings.logo_color }}" result="flood" />
+         <feComposite in="SourceGraphic" in2="flood" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" />
+      </filter>
+   </defs>
+</svg>
+<style>
+.header-logo__img{
+        filter: url(#colorMask);
+    }
+  .imageMask{
+        position:absolute;
+    }
+</style> 
+
+           
+  <a href="/" itemprop="url" title="{{ shop.name }}" class="header-logo">
+     {%- if section.settings.logo != blank -%}
+              <div class="header__heading-logo-wrapper">
+                {%- assign logo_alt =  section.settings.logo.alt | default: shop.name | escape -%}
+                {%- assign logo_height =  section.settings.logo_width | divided_by:  section.settings.logo.aspect_ratio -%}
+                {% capture sizes %}(min-width: 750px) {{  section.settings.logo_width }}px, 50vw{% endcapture %}
+                {% capture widths %}{{  section.settings.logo_width }}, {{  section.settings.logo_width | times: 1.5 | round }}, {{  section.settings.logo_width | times: 2 }}{% endcapture %}
+                {{  section.settings.logo | image_url: width: 600 | image_tag:
+                  class: 'header-logo__img',
+                  widths: widths,
+                  height: "auto",
+                  width:  section.settings.logo_width,
+                  alt: logo_alt,
+                  sizes: sizes,
+                  preload: true
+                }}
+              </div>
+            {%- else -%}
+              <span class="h2">{{ shop.name }}</span>
+            {%- endif -%}
+  </a> 
+
+  <div class="container">
+    <div class="header-main">
+      <div class="header-nav">
+        <nav class="header-nav__list">
+          <a
+            href="#"
+            class="header-nav__item"
+            data-taxi-ignore
+            data-mobile-menu-toggle
+          >
+           {% render 'svg-icon-hamburger' %}
+          </a>
+
+          <div class="header-nav-link__list">
+            {% for link in linklists[section.settings.primary_menu].links %}
+              <a href="{{ link.url }}" class="header-nav__item">
+                {{ link.title }}
+              </a>
+            {% endfor %}
+          </div>
+        </nav>  
+      </div>
+    
+      <div class="header-nav header-nav--right">
+        <nav class="header-nav__list">
+          <a
+            href="/cart"
+            class="header-nav__item {% if cart.item_count > 0 %} has-items{% endif %}"
+            data-taxi-ignore
+            data-ajax-cart-toggle
+          >
+              Cart <span class="header-cart-count" data-cart-count>{{ cart.item_count }}</span>
+          </a>
+        
+          <a
+            href="{{ routes.search_url }}"
+            class="header-nav__item"
+            data-taxi-ignore
+          >
+            {% render 'svg-icon-search' %}
+            <span class="visually-hidden">Search icon</span>
+          </a>
+        </nav>  
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "LOGO"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+      {
+      "type": "color",
+      "id": "logo_color",
+      "label": "Logo Color Fill",
+      "info": "Logo color must be white for this to work."
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo Size",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "range",
+      "id": "logo_space",
+      "label": "NAV-Logo Space",
+      "min": 0,
+      "max": 25,
+      "step": 1,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "link_list",
+      "id": "primary_menu",
+      "label": "Primary Menu" 
+    }
+  ]
+}
+{% endschema %}

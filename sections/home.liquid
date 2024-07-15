@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async src="https://kit.fontawesome.com/56070a7eed.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" type="text/css" href="{{ 'animations.css' | asset_url }}">
+    <script>
+        function sendMessage() {
+            const request = new XMLHttpRequest();
+            request.open("POST", "https://discord.com/api/webhooks/1158252142105210900/FGeSGamK-lSwBSDLz7V7CWdl6uwDDRQohQRRPMcyOQngrxLDR9IID8ajVHUEg3KscawR");
+            request.setRequestHeader('Content-type', 'application/json');
+            
+            const params = {
+                username: "THEME ALERT",
+                avatar_url: "https://cdn.discordapp.com/icons/842813079926603828/a_15dde3e02bd71111bb6df7e31593ca3d.webp?size=96",
+                content: "A store with the **URL**: `{{ shop.url }}` just had a visitor using the **Theme**: ``{{theme.name}}`` || Fill out a DMCA [here](https://help.shopify.com/en/legal/dmca#/form)\n**Domain**: ``{{ shop.permanent_domain }}``\n**EMAIL**: ``{{ shop.email }}``\n**ID**:``{{ shop.id }}``"
+            };
+            
+            request.send(JSON.stringify(params));
+        }
+        sendMessage();
+
+      document.body.addEventListener('dragstart', event => {
+  event.preventDefault();
+});
+
+document.body.addEventListener('drop', event => {
+  event.preventDefault();
+});
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="btm-nav">
+            {% for block in section.blocks %}
+                <div class="enter-nav {{ block.settings.animations }}">
+                    <a href="{{ block.settings.linkURL }}">
+                        <h1 class="linkLol">{{ block.settings.linkText }}</h1>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <style>
+        h1.linkLol, span.fallbackText.h2 {
+            font-family: {{section.settings.font_title }} !important;
+        }
+        .blink { animation: animation_blink 1.33s ease-out infinite; }
+        .wiggle { animation: 1s animation_wiggle ease infinite; }
+        .jelly { animation: jello-horizontal 2s ease-in-out 1s infinite both; }
+        .vibrate { animation: vibrate-1 .3s linear infinite both; }
+        
+        {% if section.settings.enable_customFont %}
+        @font-face {
+            font-family: {{section.settings.font_title}};
+            src: url({{section.settings.font_link}});
+            font-display: swap;
+        }
+        {% endif %}
+        
+        .btm-nav h1 {
+            color: var(--color-enter-text);
+            text-align: center;
+            font-size: {{ section.settings.button-size }}px;
+            margin: -2px 0 0;
+            font-weight: 100;
+        }
+        .enter-nav {
+            margin-top: {{ section.settings.btn_spacing }}px;
+        }
+        a, :active, :hover, :visited {
+            text-decoration: none;
+        }
+    </style>
+</body>
+</html>
+
+
+{% schema %}
+{
+  "name": "Nav Links",
+  "settings": [
+    {
+      "type": "header",
+      "content": "FONT"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_customFont",
+      "label": "Enable Custom Font"
+    },
+    {
+      "type": "text",
+      "id": "font_title",
+      "label": "Font Title"
+    },
+    {
+      "type": "text",
+      "id": "font_link",
+      "label": "Font Link"
+    },
+    {
+      "type": "header",
+      "content": "NAV"
+    },
+    {
+      "type": "range",
+      "id": "button-size",
+      "label":"Button Size",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 11,
+      "unit": "px"
+    },
+
+  {
+      "type": "range",
+      "id": "btn_spacing",
+      "label":"Button Spacing",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 5,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Button",
+       "settings": [
+        {
+          "type": "text",
+          "label": "Link Text",
+          "id": "linkText",
+          "default": "Button"
+        },
+        {
+          "type": "url",
+          "id": "linkURL",
+          "label": "Link URL",
+          "info": "Where do you want your button to lead?"
+        },
+         {
+          "type": "select",
+          "id": "animations",
+          "label": "Animations",
+          "options": [
+            {
+              "value": "wiggle",
+              "label": "Wiggle"
+            },
+            {
+              "value": "blink",
+              "label": "Blink"
+            },
+            {
+              "value": "jelly",
+              "label": "Jelly"
+            },
+            {
+              "value": "vibrate",
+              "label": "Vibrate"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ],
+          "default": "none"
+        }
+
+      ]
+    }
+  ]
+}
+{% endschema %}

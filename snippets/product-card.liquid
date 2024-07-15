@@ -1,0 +1,167 @@
+{%- comment %}
+
+  Product Card
+  ------------------------------------------------------------------------------
+
+  Usage:
+
+  {% render 'product-card',
+             product: { product } - required
+  %}
+
+{% endcomment -%}
+
+{% if product %}
+  {%- capture alt_text %}
+    {% if product.featured_image.alt %}
+      {{ product.featured_image.alt }}
+    {% else %}
+      "{{ product.title }}" Featured Image
+    {% endif %}
+  {%- endcapture %}
+  {% comment %} <div class="window" style="width: 100%">
+    <div class="title-bar">
+      <div class="title-bar-text">{{ product.price }}</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Maximize"></button>
+        <button aria-label="Close"></button>
+      </div>
+    </div>
+    <div class="window-body">
+      <a href="{{ product.url }}">
+        <div class="product-card{% if product.available == false %} product-card--sold-out{% endif %}" data-product-card>
+          <div class="product-card__contents">
+            <div class="product-card__gallery">
+                <div class="product-card__gallery-item">
+                  <img
+                    data-src="{{ product.featured_image | image_url: width: '600' }}"
+                    data-srcset="{{ product.featured_image | image_url: width: '540' }} 540w,
+                                  {{ product.featured_image | image_url: width: '720' }} 720w,
+                                  {{ product.featured_image | image_url: width: '900' }} 900w"
+                    data-sizes="auto"                             
+                    alt="{{ alt_text | escape }}"
+                    height="{{ product.featured_image.height }}"
+                    width="{{ product.featured_image.width }}"
+                    class="lazyload lazy-image"
+                  >                
+                </div>
+            </div> 
+          </div>
+        </div>
+      </a>
+    </div>
+  </div> {% endcomment %}
+
+{% comment %} new line {% endcomment %}
+
+<div id="draggable" class="window" style="width: 100%">
+  <div class="title-bar">
+    <div class="title-bar-text">Product</div>
+    <div class="title-bar-controls">
+      <button aria-label="Minimize"></button>
+      <button aria-label="Maximize"></button>
+      <button aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="window-body">
+    <menu role="tablist">
+      <button aria-selected="true" aria-controls="buy">Buy</button>
+      <button aria-controls="description">Description</button>
+      <button aria-controls="size">Size Chart</button>
+    </menu>
+    <article role="tabpanel" id="buy">
+        <p>{{ product.title }}</p>
+        <div class="window-body">
+          <a href="{{ product.url }}">
+            <div class="product-card{% if product.available == false %} product-card--sold-out{% endif %}" data-product-card>
+              <div class="product-card__contents">
+                <div class="product-card__gallery">
+                    <div class="product-card__gallery-item">
+                      <img
+                        data-src="{{ product.featured_image | image_url: width: '600' }}"
+                        data-srcset="{{ product.featured_image | image_url: width: '540' }} 540w,
+                                      {{ product.featured_image | image_url: width: '720' }} 720w,
+                                      {{ product.featured_image | image_url: width: '900' }} 900w"
+                        data-sizes="auto"                             
+                        alt="{{ alt_text | escape }}"
+                        height="{{ product.featured_image.height }}"
+                        width="{{ product.featured_image.width }}"
+                        class="lazyload lazy-image"
+                      >                
+                    </div>
+                </div> 
+              </div>
+            </div>
+          </a>
+        </div>
+        
+      </article>
+
+    <article role="tabpanel" hidden="" id="description">
+      <p>{{ product.description }}</p>
+    </article>
+
+    <article role="tabpanel" hidden="" id="size">
+      <img
+        data-src="{{ product.metafields.custom.size_chart | img_url: 'master' }}"
+        data-srcset="{{ product.metafields.custom.size_chart | image_url: width: '540' }} 540w,
+                      {{ product.metafields.custom.size_chart | image_url: width: '720' }} 720w,
+                      {{ product.metafields.custom.size_chart | image_url: width: '900' }} 900w"
+        data-sizes="auto"                             
+        alt="{{ alt_text | escape }}"
+        height="{{ product.metafields.custom.size_chart.height }}"
+        width="{{ product.metafields.custom.size_chart.width }}"
+        class="lazyload lazy-image card-image">
+    </article>
+    
+  </div>
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+const tabs = document.querySelectorAll("menu[role=tablist]");
+
+for (let i = 0; i < tabs.length; i++) {
+  const tab = tabs[i];
+
+  const tabButtons = tab.querySelectorAll("menu[role=tablist] > button");
+
+  tabButtons.forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      tabButtons.forEach((button) => {
+        if (
+          button.getAttribute("aria-controls") ===
+          e.target.getAttribute("aria-controls")
+        ) {
+          button.setAttribute("aria-selected", true);
+          openTab(e, tab);
+        } else {
+          button.setAttribute("aria-selected", false);
+        }
+      });
+    })
+  );
+}
+  
+});
+
+
+function openTab(event, tab) {
+  const articles = tab.parentNode.querySelectorAll('[role="tabpanel"]');
+  articles.forEach((p) => {
+    p.setAttribute("hidden", true);
+  });
+  const article = tab.parentNode.querySelector(
+    `[role="tabpanel"]#${event.target.getAttribute("aria-controls")}`
+  );
+  article.removeAttribute("hidden");
+}
+</script>
+  
+
+{% endif %}

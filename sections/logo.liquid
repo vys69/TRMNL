@@ -1,0 +1,174 @@
+<script type="module" src="{{ 'model-viewer.min.js' | asset_url }}"></script>
+{%- for block in section.blocks -%}
+{%- case block.type -%}
+{% when 'static' %}
+<svg class="imageMask" xmlns="http://www.w3.org/2000/svg" version="1.1" width="0" height="0">
+   <defs>
+      <filter id="colorMask">
+         <feFlood flood-color="{{ block.settings.logo_color }}" result="flood" />
+         <feComposite in="SourceGraphic" in2="flood" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" />
+      </filter>
+   </defs>
+</svg>
+<div class="logo-container">
+   {%- if block.settings.logo != blank -%}
+   <div class="header__heading-logo-wrapper">
+      {%- assign logo_alt =  block.settings.logo.alt | default: shop.name | escape -%}
+      {%- assign logo_height =  block.settings.logo_width | divided_by:  block.settings.logo.aspect_ratio -%}
+      {% capture sizes %}(min-width: 750px) {{  block.settings.logo_width }}px, 50vw{% endcapture %}
+      {% capture widths %}{{  block.settings.logo_width }}, {{  block.settings.logo_width | times: 1.5 | round }}, {{  block.settings.logo_width | times: 2 }}{% endcapture %}
+      {{  block.settings.logo | image_url: width: 600 | image_tag:
+      class: 'syn-img',
+      widths: widths,
+      height: logo_height,
+      width:  block.settings.logo_width,
+      alt: logo_alt,
+      sizes: sizes,
+      preload: true
+      }}
+   </div>
+   {%- else -%}
+   <span class="fallbackText">{{ shop.name }}</span>
+   {%- endif -%}
+</div>
+{% when '3D' %}
+<div class="enter-logo-div">
+   <model-viewer
+      id="grim"
+      class="nav-3d"
+      src="https://cdn.shopify.com/s/files/1/0651/1683/1959/files/girim.glb?v=1682401855"
+      disable-tap
+      disable-zoom=""
+      camera-controls=""
+      auto-rotate=""
+      shadow-intensity="0"
+      skybox-image=""
+      >
+   </model-viewer>
+</div>
+{%- endcase -%}
+{%- endfor -%}
+<style>
+    .enter-logo-div{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: {{section.settings.threed_logo_top}}px;
+        padding-bottom: {{section.settings.threed_logo_bottom}}px;
+    }
+    model-viewer {
+        width: 100%;
+        height: 90%;
+        background-color: #ffffff;
+    }
+    .logo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        padding-bottom: {{section.settings.logo_space}}px;
+    }
+        span.fallbackText {
+        color: var(--text-color);
+        text-transform: uppercase;
+        font-size: {{block.settings.fallbackSize}}px;
+    }
+    .logo-container img {
+        max-width: {{ section.settings.logo_width }}px;
+        max-height: {{ section.settings.logo_width }}px;
+    }
+    .imageMask{
+        position:absolute;
+    }
+    .syn-img{
+        filter: url(#colorMask);
+    }
+</style>
+{% schema %}
+{
+   "name": "Logo",
+   "blocks": [
+      {
+         "type": "static",
+         "name": "Static",
+         "limit": 1,
+         "settings": [
+            {
+               "type": "header",
+               "content": "LOGO"
+            },
+            {
+               "type": "image_picker",
+               "id": "logo",
+               "label": "Logo"
+            },
+            {
+               "type": "color",
+               "id": "logo_color",
+               "label": "Logo Color Fill",
+               "info": "Logo color must be white for this to work."
+            },
+            {
+               "type": "range",
+               "id": "logo_width",
+               "label": "Logo Size",
+               "min": 0,
+               "max": 200,
+               "step": 2,
+               "unit": "px",
+               "default": 200
+            },
+            {
+               "type": "range",
+               "id": "fallbackSize",
+               "label": "Fallback Text Size",
+               "min": 0,
+               "max": 30,
+               "step": 2,
+               "unit": "px",
+               "default": 30,
+               "info": "Updates the size of the text when a logo is not uploaded"
+            },
+            {
+               "type": "range",
+               "id": "logo_space",
+               "label": "NAV-Logo Space",
+               "min": 0,
+               "max": 25,
+               "step": 1,
+               "unit": "px",
+               "default": 10
+            }
+         ]
+      },
+      {
+         "type": "3D",
+         "name": "3D",
+         "limit": 1,
+         "settings": [
+            {
+               "type": "header",
+               "content": "LOGO"
+            }
+         ]
+      }
+   ],
+   "presets": [
+      {
+         "name": "Logo",
+         "blocks": [
+            {
+               "type": "static"
+            },
+            {
+               "type": "3D"
+            }
+         ]
+      }
+   ]
+}
+{% endschema %}
+{% stylesheet %}
+{% endstylesheet %}
+{% javascript %}
+{% endjavascript %}
