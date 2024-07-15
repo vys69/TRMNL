@@ -48,10 +48,10 @@
     {% render 'social-meta-tags' %}
     {% render 'font-face' %}
     
-    {{ 'app.bundle.css' | asset_url | stylesheet_tag }}
+    {% comment %} {{ 'app.bundle.css' | asset_url | stylesheet_tag }}
     {{ '98.css' | asset_url | stylesheet_tag }}
-    {{ 'jquery.terminal.min.css' | asset_url | stylesheet_tag }}
-    {% comment %} {{ 'xp.css' | asset_url | stylesheet_tag }} {% endcomment %}
+     {{ 'jquery.terminal.min.css' | asset_url | stylesheet_tag }} 
+     {{ 'xp.css' | asset_url | stylesheet_tag }} {% endcomment %}
 
     {% render 'scripts-head' %}
 
