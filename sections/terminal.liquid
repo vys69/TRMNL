@@ -1,0 +1,48 @@
+{{ 'jquery.terminal.min.css' | asset_url | stylesheet_tag }}
+{{ 'jquery.terminal.min.js' | asset_url | script_tag }}
+<div id="terminal"></div>
+<script>
+    $(document).ready(function() {
+    $('#terminal').terminal(function(command, term) {
+        if (command !== '') {
+            term.echo('You typed: ' + command);
+        } else {
+            term.echo('');
+        }
+    }, {
+        greetings: 'Welcome to the jQuery Terminal',
+        name: 'js_demo',
+        height: 400,
+        prompt: 'js> '
+    });
+});
+</script>
+{% schema %}    
+    {
+      "name": "Terminal",
+      "class": "TRMNL",
+      "tag": "section",
+      "settings": [
+        
+      ],
+      "presets": [
+        {
+          "name": "Terminal",
+          "settings": {
+          }
+        }
+      ]
+    }
+{% endschema %}
+{% style %}
+    body, html {
+        font-family: Arial, sans-serif;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #terminal {
+        height: 100%;
+        width: 100%;
+    }
+{% endstyle %}
