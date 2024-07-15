@@ -1,1 +1,44 @@
-{"sections":{"dd0f9194-e5d3-4cb7-af6b-325fd2a30b41":{"type":"featured-products","disabled":true,"settings":{"title":"","enable_cta":false,"source":"collection","product_list":["2009-knit-gloves","07012005-zip-up-hoodie","22-life-multi-use-buffer-bag","4x-t-double-layer-sleeveless-hoodie","50k-zipup-coal","aestas-vehemence-bundle","untitled-aug9_16-22","arch-logo-tee-coal","arch-logo-tee-ash","beneath-the-sky-tee-cream"],"collection":"yzy","column_count_desktop":3,"column_count_md":3,"column_count_mobile":1,"padding_top":36,"padding_bottom":36,"padding":"padded"}},"term_KmmJ7L":{"type":"term","settings":{}}},"order":["dd0f9194-e5d3-4cb7-af6b-325fd2a30b41","term_KmmJ7L"]}
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "dd0f9194-e5d3-4cb7-af6b-325fd2a30b41": {
+      "type": "featured-products",
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "enable_cta": false,
+        "source": "collection",
+        "product_list": [
+          "2009-knit-gloves",
+          "07012005-zip-up-hoodie",
+          "22-life-multi-use-buffer-bag",
+          "4x-t-double-layer-sleeveless-hoodie",
+          "50k-zipup-coal",
+          "aestas-vehemence-bundle",
+          "untitled-aug9_16-22",
+          "arch-logo-tee-coal",
+          "arch-logo-tee-ash",
+          "beneath-the-sky-tee-cream"
+        ],
+        "collection": "yzy",
+        "column_count_desktop": 3,
+        "column_count_md": 3,
+        "column_count_mobile": 1,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding": "padded"
+      }
+    }
+  },
+  "order": [
+    "dd0f9194-e5d3-4cb7-af6b-325fd2a30b41"
+  ]
+}
