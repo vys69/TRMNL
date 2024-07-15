@@ -3,20 +3,20 @@
 {{ 'jquery.terminal.min.js' | asset_url | script_tag }}
 <div id="terminal"></div>
 <script>
-    $(document).ready(function() {
-    $('#terminal').terminal(function(command, term) {
-        if (command !== '') {
-            term.echo('You typed: ' + command);
-        } else {
-            term.echo('');
-        }
-    }, {
-        greetings: 'Welcome to the jQuery Terminal',
-        name: 'js_demo',
-        height: 400,
-        prompt: 'js> '
+    document.addEventListener('DOMContentLoaded', function() {
+        new Terminal('#terminal', {
+            greetings: 'Welcome to the jQuery Terminal',
+            name: 'js_demo',
+            height: 400,
+            prompt: 'js> '
+        }).echo(function(command, term) {
+            if (command !== '') {
+                term.echo('You typed: ' + command);
+            } else {
+                term.echo('');
+            }
+        });
     });
-});
 </script>
 {% schema %}    
     {
