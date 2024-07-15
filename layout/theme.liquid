@@ -100,24 +100,24 @@
     <a class="visually-hidden skip-link" data-in-page-link href="#view-container">
       {{ 'general.accessibility.skip_to_content' | t }}
     </a>
-    {% section 'header' %}
+    {% comment %} {% section 'header' %}
     {% section 'mobile-menu' %}
     <style>
       .layout{
         margin-top: 65px;
       }
-    </style>
+    </style> {% endcomment %}
 
     <div class="layout">
       <main id="view-container" class="view-container" role="main" data-taxi>
         <div data-taxi-view="{{ view }}">
       {{ content_for_layout }}
         </div>
-      </main>
-      {% section 'footer' %}
-    </div>
+        </main>
+        {% comment %} {% section 'footer' %} {% endcomment %}
+      </div>
 
-    {% section 'ajax-cart' %}
+    {% comment %} {% section 'ajax-cart' %} {% endcomment %}
 
     {% if settings.developer_hide_preview_bar == true %}
       <style>
