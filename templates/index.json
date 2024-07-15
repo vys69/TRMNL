@@ -36,9 +36,15 @@
         "padding_bottom": 36,
         "padding": "padded"
       }
+    },
+    "terminal_8kqpfK": {
+      "type": "terminal",
+      "settings": {
+      }
     }
   },
   "order": [
-    "dd0f9194-e5d3-4cb7-af6b-325fd2a30b41"
+    "dd0f9194-e5d3-4cb7-af6b-325fd2a30b41",
+    "terminal_8kqpfK"
   ]
 }
