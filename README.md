@@ -1,2 +1,2 @@
 # TRMNL
- GRIMLABS Terminal Theme
+ Shopify... but in the terminal?
